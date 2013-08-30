@@ -1,0 +1,33 @@
+# Oxford PP Datadisks auto.pplxfs2 file.
+# 8th December 2006
+
+homebackup -ro,exec,hard,nointr,bg      pplxbackup.physics.ox.ac.uk:/var/backupext4/pplxfs10
+cdf       -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/cdf
+cdfjpsi   -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/cdfjpsi
+delphi    -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/delphi
+galahad   -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/galahad
+#harp      -rw,exec,hard,nointr,bg       pplxfstemp.physics.ox.ac.uk:/data/harp
+itstaff       -rw,exec,hard,nointr,bg,acl       pplxfs10.physics.ox.ac.uk:/data/itstaff
+lc        -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/lc
+lhcb      -bind                         :/lustre/lhcb
+laserwire -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/laserwire
+licas     -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/licas
+mice      -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/mice
+minos     -rw,exec,hard,nointr,bg       pplxfs11.physics.ox.ac.uk:/data/minos
+slhc      -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/slhc
+matrix    -rw,exec,hard,nointr,bg       pplxfs3.physics.ox.ac.uk:/data/matrix
+t2k       -rw,exec,hard,nointr,bg       pplxfs11.physics.ox.ac.uk:/data/t2k
+lcfi      -rw,exec,hard,nointr,bg       pplxfs11.physics.ox.ac.uk:/data/lcfi
+cresst    -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/cresst
+atlas     -bind                         :/lustre/atlas
+zeus      -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/zeus
+font      -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/font
+jai       -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/jai
+cdfproject -rw,exec,hard,nointr,bg	pplxfs11.physics.ox.ac.uk:/data/cdfproject
+lpwa      -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/lpwa
+cryoedm   -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/cryoedm
+snoplus   -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/snoplus
+strongbsm -rw,exec,hard,nointr,bg       pplxfs10.physics.ox.ac.uk:/data/strongbsm
+mars      -rw,exec,hard,nointr,bg       pplxfs11.physics.ox.ac.uk:/data/mars
+edelweiss      -rw,exec,hard,nointr,bg       pplxfs9.physics.ox.ac.uk:/data/edelweiss
+
