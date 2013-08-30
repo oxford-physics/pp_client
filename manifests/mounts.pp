@@ -20,10 +20,7 @@ $nfsmountreqs =[ Package["nfs-utils"], Service["nfslock"],  Service["rpcbind"]]
   require => File['/network'],
   }
 
-
-  $spec = "${name[0]}"
-  $file = "${name[1]}"
-
+  include nfsclient
 
   file { '/system' :
   ensure  => 'directory',
@@ -32,31 +29,6 @@ $nfsmountreqs =[ Package["nfs-utils"], Service["nfslock"],  Service["rpcbind"]]
   group   => 'root',
   }
 
-  file { '/lustre' :
-  ensure  => 'directory',
-  mode    => '0744',
-  owner   => 'root',
-  group   => 'root',
-  }
-  file { '/lustre/lhcb' :
-  ensure  => 'directory',
-  mode    => '0744',
-  replace => "no",
-  owner   => 'root',
-  group   => 'root',
-  require => File['/lustre'],
-  }
-  file { '/lustre/atlas' :
-  ensure  => 'directory',
-  mode    => '0744',
-  replace => "no",
-  owner   => 'root',
-  group   => 'root',
-  require => File['/lustre'],
-  }
-
-
-   
     realize(File["/network"])
   # realize(File["/network/software"])
   mount { "/network/software":
@@ -86,33 +58,25 @@ $nfsmountreqs =[ Package["nfs-utils"], Service["nfslock"],  Service["rpcbind"]]
     atboot  => "true", 
     require => $nfsmountreqs,
    }
-  mount { "/lustre/lhcb":
-    device  => "pplxlustremds:/lustre/lhcb",
-    fstype  => "lustre",
-    ensure  => "mounted",
-    options => "tcp,rsize=8192,wsize=8192,hard,intr,exec,dev,nosuid,rw,bg",
-    atboot  => "true",
-    require => File['/lustre/lhcb'],
-    }
-  mount { "/lustre/atlas":
-    device  => "pplxlustremds:/lustre/atlas",
-    fstype  => "lustre",
-    ensure  => "mounted",
-    options => "tcp,rsize=8192,wsize=8192,hard,intr,exec,dev,nosuid,rw,bg",
-    atboot  => "true",
-    require => File['/lustre/atlas'],
-    }
+  #mount { "/lustre/lhcb":
+  #  device  => "pplxlustremds:/lustre/lhcb",
+  #  fstype  => "lustre",
+  #  ensure  => "mounted",
+  #  options => "tcp,rsize=8192,wsize=8192,hard,intr,exec,dev,nosuid,rw,bg",
+  #  atboot  => "true",
+  #  require => File['/lustre/lhcb'],
+  #  }
+  #mount { "/lustre/atlas":
+  #  device  => "pplxlustremds:/lustre/atlas",
+  #  fstype  => "lustre",
+  #  ensure  => "mounted",
+  #  options => "tcp,rsize=8192,wsize=8192,hard,intr,exec,dev,nosuid,rw,bg",
+  #  atboot  => "true",
+  #  require => File['/lustre/atlas'],
+  #  }
 
   #fstab augeas lens appars not to work when adding ( try it from augtool) 
   #It can change existing things though
-  $settingsadd = [ "set  01/spec ${spec}", 
-                    "set 01/file ${file}",
-                    "set 01/opt tcp",
-                    "set 01/vfstype nfs",
-                    "set 01/dump 0",
-                    "set 01/passno 0",
-                  ]
-   
        
 #     augeas{"${file}_change":
 #       context   => '/files/etc/fstab',

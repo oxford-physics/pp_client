@@ -44,6 +44,13 @@ class pp_client::local_datadirs {
       mode    => '0400',
   }
 
+  service{'autofs':
+             ensure     => running,
+             hasstatus  => true,
+             hasrestart => true,
+             enable     => true,
+             require    => [Package['autofs']]
+  }
 
 
   $map = '/etc/auto.pplxfs'
