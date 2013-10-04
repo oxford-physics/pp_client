@@ -1,0 +1,53 @@
+#!/bin/bash 
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+PROGNAME=`basename $0`
+
+nagiosbox=pplxconfig2.physics.ox.ac.uk
+send_nsca_config=/etc/nagios/send_nsca.cfg
+
+print_usage() {
+	echo "Usage: $PROGNAME"
+}
+
+
+# check_yumupdate todo list:
+# - add critical check for more than n pending packages,
+# - make threshold configurable
+# - add 'priority packages' option to give critical error on particular RPMs
+
+
+print_help() {
+	echo -e "This plugin checks whether there are outstanding package updates with yum.\n"
+	exit 0
+}
+
+case "$1" in
+	--help)
+		print_help
+		exit 0
+		;;
+	-h)
+		print_help
+		exit 0
+		;;
+	*)
+		# Run yum, all from cache, minimal errors, minimal debug output
+		list=$(yum -C -e0 -d0 check-update) 
+		status=$?
+		if test ${status} -eq 0; then
+			echo -e ${HOSTNAME}"\tYUM updates\t0\tYUM OK - no outstanding updates\n" | /usr/sbin/send_nsca -H ${nagiosbox} -c ${send_nsca_config}
+			exit 0
+		elif test ${status} -eq 100; then
+			# Careful quoting to keep newlines for the cut, then strip them
+			# for the final output
+			shortlist=$(echo "${list}" | cut -d. -f 1)
+			echo -e -n ${HOSTNAME}"\tYUM updates\t1\tWARNING - pending updates: "${shortlist}"\n" | /usr/sbin/send_nsca -H ${nagiosbox} -c ${send_nsca_config}
+			exit 1
+		else
+			echo "UNKNOWN - error getting yum status"
+			exit 3
+		fi
+		;;
+esac	
