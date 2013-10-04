@@ -28,4 +28,18 @@ class pp_client::usersoftware {
   group   => 'root',
   }
 
+  file { '/etc/profile.d/zznag.csh' :
+  source  => "puppet:///modules/$module_name/nag.csh",
+  ensure  => 'present',
+  mode    => '0644',
+  owner   => 'root',
+  group   => 'root',
+  }
+  file { '/etc/profile.d/zznag.sh' :
+  source  => "puppet:///modules/$module_name/nag.sh",
+  ensure  => 'present',
+  mode    => '0644',
+  owner   => 'root',
+  group   => 'root',
+  }
 }

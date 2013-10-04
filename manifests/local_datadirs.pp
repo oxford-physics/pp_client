@@ -1,4 +1,4 @@
-class pp_client::local_datadirs {
+class pp_client::local_datadirs ( ) inherits pp_client::params{
 
   $this_profile = "$module_name"
   ensure_packages ( ['nfs-utils'] )
@@ -11,8 +11,8 @@ class pp_client::local_datadirs {
   }
     service { 'nfs':
     name       => 'nfs',
-    ensure     => running,
-    enable     => true,
+    ensure     => stopped,
+    enable     => false,
     hasrestart => true,
     hasstatus  => true,
     require => Package['nfs-utils']
@@ -37,26 +37,11 @@ class pp_client::local_datadirs {
 #chkconfig nfslock on
  file { '/etc/auto.pplxfs':
       ensure  => present,
-      source  => "puppet:///modules/$this_profile/auto.pplxfs",
+      source  => $autofslocation,
       require => Package['autofs'],
       owner   => 'root',
       group   => 'root',
       mode    => '0400',
-  }
-
-  $autofs_defaults = {
-  'autofs_pp' => {   'ensure'     => running,
-              'hasstatus'  => true,
-              'hasrestart' => true,
-              'enable'     => true,
-              'require'    => [Package['autofs']],
-              'name' => 'autofs'
-              }
-   }
-
-
-  if ! defined(Service['autofs']) {
-      create_resources("service",  $autofs_defaults )
   }
 
 
