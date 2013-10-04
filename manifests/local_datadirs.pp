@@ -44,13 +44,21 @@ class pp_client::local_datadirs {
       mode    => '0400',
   }
 
-  service{'autofs':
-             ensure     => running,
-             hasstatus  => true,
-             hasrestart => true,
-             enable     => true,
-             require    => [Package['autofs']]
+  $autofs_defaults = {
+  'autofs_pp' => {   'ensure'     => running,
+              'hasstatus'  => true,
+              'hasrestart' => true,
+              'enable'     => true,
+              'require'    => [Package['autofs']],
+              'name' => 'autofs'
+              }
+   }
+
+
+  if ! defined(Service['autofs']) {
+      create_resources("service",  $autofs_defaults )
   }
+
 
 
   $map = '/etc/auto.pplxfs'
