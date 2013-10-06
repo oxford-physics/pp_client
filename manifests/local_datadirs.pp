@@ -55,6 +55,20 @@ class pp_client::local_datadirs ( ) inherits pp_client::params{
        '0.9.0','0.10.0': { $lenspath = '/var/lib/puppet/lib/augeas/lenses' }
         default: { $lenspath = undef }
      }
+   $autofs_defaults = {
+   'autofs' => {   'ensure'     => running,
+               'hasstatus'  => true,
+               'hasrestart' => true,
+               'enable'     => true,
+               'require'    => [Package['autofs']],
+               'name' => 'autofs'
+               }
+    }
+ 
+ 
+   if ! defined(Service['autofs']) {
+       create_resources("service",  $autofs_defaults )
+   }
 
  #Pattern based on     
  #http://projects.puppetlabs.com/projects/1/wiki/puppet_augeas
