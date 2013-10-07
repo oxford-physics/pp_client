@@ -7,7 +7,7 @@ export DIST
 #prepends to module path, so use in reverse order
 module use /network/software/modules
 test -d  /network/software/linux-x86_64/arc/modules-tested && module use /network/software/linux-x86_64/arc/modules-tested
-test -d /network/software/linux-x86_64/modules && /network/software/linux-x86_64/modules
+test -d /network/software/linux-x86_64/modules && module use /network/software/linux-x86_64/modules
 
 if [[ -n $DIST ]]; then
 #   export MODULEPATH=$MODULEPATH:/local/software/modules:/network/software/$DIST/modules:/network/software/modules
