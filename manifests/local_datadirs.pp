@@ -37,13 +37,12 @@ class pp_client::local_datadirs ( ) inherits pp_client::params{
 #chkconfig nfslock on
  file { '/etc/auto.pplxfs':
       ensure  => present,
-      source  => $autofslocation,
+      source  => $autodatalocation,
       require => Package['autofs'],
       owner   => 'root',
       group   => 'root',
       mode    => '0400',
   }
-
 
 
   $map = '/etc/auto.pplxfs'

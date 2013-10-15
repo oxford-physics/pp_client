@@ -1,4 +1,5 @@
-class pp_client::params ( $autofslocation="puppet:///modules/$module_name/auto.pplxfs" ) 
+class pp_client::params ( $autodatalocation="puppet:///modules/$module_name/auto.pplxfs" ,
+) 
 {
 
 }
