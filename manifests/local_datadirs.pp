@@ -1,4 +1,7 @@
-class pp_client::local_datadirs ( ) inherits pp_client::params{
+class pp_client::local_datadirs ( 
+$autohomelocation = $pp_client::params::autohomelocation,
+$autodatalocation = $pp_client::params::autodatalocation
+) inherits pp_client::params{
 
   $this_profile = "$module_name"
   ensure_packages ( ['nfs-utils'] )
@@ -33,9 +36,22 @@ class pp_client::local_datadirs ( ) inherits pp_client::params{
       require => Package['autofs'],
       owner   => 'root',
       group   => 'root',
-      mode    => '0400',
+      mode    => '0444',
   }
 
+ file { '/etc/auto.home':
+      ensure  => present,
+      source  => $autohomelocation,
+      require => Package['autofs'],
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+  }
+ file { '/network/home':
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'root',
+  }
 
   $map = '/etc/auto.pplxfs'
   $options_keys =['--timeout', '-g' ]
@@ -60,6 +76,44 @@ class pp_client::local_datadirs ( ) inherits pp_client::params{
    if ! defined(Service['autofs']) {
        create_resources("service",  $autofs_defaults )
    }
+
+ #Pattern based on     
+ #http://projects.puppetlabs.com/projects/1/wiki/puppet_augeas
+
+     augeas{"home_edit":
+
+       context   => '/files/etc/auto.master/',
+
+       load_path => $lenspath,
+       #This part changes options on an already existing line
+
+      changes   => [
+             "set *[map = '$map']     $dir",
+             "set *[map = '$map']/map  $map",
+             "set *[map = '$map']/opt[1] ${options_keys[0]}",
+             "set *[map = '$map']/opt[1]/value ${options_values[0]}",
+             "set *[map = '$map']/opt[2] ${options_keys[1]}",
+     #        "set *[map = '$map']/opt[2]/value ${options_values[1]}",
+        ]   ,
+       notify    => Service['autofs']
+     }
+     augeas{"home_change":
+       context   => '/files/etc/auto.master/',
+       load_path => $lenspath,
+       #This part changes options on an already existing line
+       changes   => [
+             "set 01   /network/home",
+             "set 01/map  /etc/auto.home",
+             "set 01/opt[1] ${options_keys[0]}",
+             "set 01/opt[1]/value ${options_values[0]}",
+             "set 01/opt[2] ${options_keys[1]}",
+    #         "set 01/opt[2]/value ${options_values[1]}",
+        ]   ,
+       onlyif    => "match *[map='/etc/auto.home'] size == 0",
+
+       notify    => Service['autofs']
+     }
+#######################################
 
  #Pattern based on     
  #http://projects.puppetlabs.com/projects/1/wiki/puppet_augeas

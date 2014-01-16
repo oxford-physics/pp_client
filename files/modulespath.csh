@@ -3,14 +3,21 @@ test  -f /etc/issue &&  grep "Scientific Linux release 6" /etc/issue > /dev/null
 test  -f /etc/issue && grep "Red Hat Enterprise Linux Server release 6" /etc/issue > /dev/null && set DIST=el6
 setenv DIST $DIST
 #prepends to module path, so use in reverse order
-module use /network/software/modules
-
-test -d  /network/software/linux-x86_64/arc/modules-tested && module use /network/software/linux-x86_64/arc/modules-tested
-test -d /network/software/linux-x86_64/modules && module use /network/software/linux-x86_64/modules
+set CURPATH=/network/software/modules
+test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
+set CURPATH=/network/software/el6/arc/modules-tested
+test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
+set CURPATH=/network/software/linux-x86_64/arc/modules-tested
+test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
+set CURPATH=/network/software/linux-x86_64/modules
+test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
 if ($?DIST) then
-    module use /network/software/$DIST/modules
+     set CURPATH=/network/software/$DIST/modules
+     test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
 endif
-test -d /local/software/modules && module use /local/software/modules
+
+set CURPATH=/local/software/modules
+test -d $CURPATH && setenv MODULEPATH ${CURPATH}:${MODULEPATH}
 
 setenv PROFILESOURCED 1
 
