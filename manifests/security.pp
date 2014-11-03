@@ -1,3 +1,5 @@
+#merged with the ppclient ppsoftware and interactive policy groups
+#i.e. obsolete
 class pp_client::security {
 
   include "access::access_wrapper"

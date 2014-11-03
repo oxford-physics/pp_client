@@ -1,7 +1,8 @@
+#Hanlded elsewhere, so obsolete
 class pp_client::misc {
 
-    file {'/etc/cron.hourly/passive_check_yumupdate' :
-          source => "puppet:///modules/${module_name}/cron-passive_check_yumupdate",
+    file {'/usr/local/bin/newnode-test.sh' :
+          source => "puppet:///modules/${module_name}/newnode-test.sh",
           mode => 755,
           owner => root,
           group=>root,

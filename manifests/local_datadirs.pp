@@ -1,3 +1,4 @@
+#A bit crap, replace with something better for central ->pp merge
 class pp_client::local_datadirs ( 
 $autohomelocation = $pp_client::params::autohomelocation,
 $autodatalocation = $pp_client::params::autodatalocation
@@ -59,7 +60,7 @@ $autodatalocation = $pp_client::params::autodatalocation
   $dir = '/data'
 
      case $::augeasversion {
-       '0.9.0','0.10.0': { $lenspath = '/var/lib/puppet/lib/augeas/lenses' }
+       '0.9.0','0.10.0','1.0.0': { $lenspath = '/var/lib/puppet/lib/augeas/lenses' }
         default: { $lenspath = undef }
      }
    $autofs_defaults = {

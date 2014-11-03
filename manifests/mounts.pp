@@ -1,3 +1,4 @@
+#merged into usernode policy group, so obsolete
 class pp_client::mounts {
 
 $nfsmountreqs =[ Package["nfs-utils"], Service["nfslock"],  Service["rpcbind"]]
